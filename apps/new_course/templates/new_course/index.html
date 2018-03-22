@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+    </style>
+</head>
+<body>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h3>Add a new course</h3><br>
+    <form action="/add/process/" method="POST">
+        {% csrf_token %}
+        Name: <input type="text" name="name" id="name"><br>
+        Description: <textarea rows="4" cols="50" name="desc"></textarea><br>
+        <input type="submit" value="Add">
+    </form><br>
+    <h3>Courses</h3><br>
+    <table>
+        <tr>
+          <th>Course Name</th>
+          <th>Description</th>
+          <th>Date Added</th>
+          <th>Actions</th>
+        </tr>
+        {% for course in all_courses %}
+        <tr>
+          <td>{{course.name}}</td>
+          <td>{{course.desc}}</td>
+          <td>{{course.created_at}}</td>
+          <td> <a href="/courses/destroy/{{course.id}}">Remove</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+</body>
+</html>
